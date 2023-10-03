@@ -9,7 +9,7 @@
 - Kotlin (Coroutines, Flow)
 - Jetpack Compose
 - MVVM, Clean Architecture
-- Retrofit
+- Retrofit + OkHttp
 - Dagger-Hilt
 - Material Design
 - Бэкенд на Ktor + MongoDB + JWT-аутентификация
