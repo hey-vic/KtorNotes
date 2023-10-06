@@ -4,4 +4,5 @@ sealed interface AddEditNoteEvent {
     data class TitleChanged(val newValue: String) : AddEditNoteEvent
     data class TextChanged(val newValue: String) : AddEditNoteEvent
     object OnSaveNoteClick : AddEditNoteEvent
+    object OnDeleteNoteClick : AddEditNoteEvent
 }

@@ -46,47 +46,11 @@ class AddEditNoteViewModel @Inject constructor(
             }
 
             is AddEditNoteEvent.OnSaveNoteClick -> {
-                val result = if (_state.value.noteId != null) {
-                    _state.value.noteId?.let {
-                        noteUseCases.updateNote(
-                            it,
-                            _state.value.title,
-                            _state.value.text
-                        )
-                    }
-                } else {
-                    noteUseCases.insertNote(
-                        _state.value.title,
-                        _state.value.text
-                    )
-                }
-                result?.onEach { loadingStatus ->
-                    when (loadingStatus) {
-                        is LoadingStatus.Error -> {
-                            _uiEventChannel.send(
-                                UiEvent.ShowSnackbar(
-                                    loadingStatus.message ?: "An unexpected error occurred"
-                                )
-                            )
-                        }
+                saveNote()
+            }
 
-                        is LoadingStatus.Loading -> {
-                            _state.value = _state.value.copy(isLoading = true)
-                        }
-
-                        is LoadingStatus.Success -> {
-                            _uiEventChannel.send(UiEvent.OnNavigateBack)
-                        }
-                    }
-                }?.launchIn(viewModelScope) ?: {
-                    viewModelScope.launch {
-                        _uiEventChannel.send(
-                            UiEvent.ShowSnackbar(
-                                "An unexpected error occurred"
-                            )
-                        )
-                    }
-                }
+            is AddEditNoteEvent.OnDeleteNoteClick -> {
+                deleteNote()
             }
         }
     }
@@ -100,6 +64,7 @@ class AddEditNoteViewModel @Inject constructor(
                             loadingStatus.message ?: "An unexpected error occurred"
                         )
                     )
+                    _state.value = _state.value.copy(isLoading = false)
                 }
 
                 is LoadingStatus.Loading -> {
@@ -113,11 +78,82 @@ class AddEditNoteViewModel @Inject constructor(
                             title = note.title,
                             text = note.text,
                             noteId = note.id,
-                            modifiedDateTime = note.modifiedDateTime
+                            modifiedDateTime = note.modifiedDateTime,
+                            isLoading = false
                         )
                     }
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun saveNote() {
+        val result = if (_state.value.noteId != null) {
+            _state.value.noteId?.let {
+                noteUseCases.updateNote(
+                    it,
+                    _state.value.title,
+                    _state.value.text
+                )
+            }
+        } else {
+            noteUseCases.insertNote(
+                _state.value.title,
+                _state.value.text
+            )
+        }
+        result?.onEach { loadingStatus ->
+            when (loadingStatus) {
+                is LoadingStatus.Error -> {
+                    _uiEventChannel.send(
+                        UiEvent.ShowSnackbar(
+                            loadingStatus.message ?: "An unexpected error occurred"
+                        )
+                    )
+                    _state.value = _state.value.copy(isLoading = false)
+                }
+
+                is LoadingStatus.Loading -> {
+                    _state.value = _state.value.copy(isLoading = true)
+                }
+
+                is LoadingStatus.Success -> {
+                    _uiEventChannel.send(UiEvent.OnNavigateBack)
+                }
+            }
+        }?.launchIn(viewModelScope) ?: {
+            viewModelScope.launch {
+                _uiEventChannel.send(
+                    UiEvent.ShowSnackbar(
+                        "An unexpected error occurred"
+                    )
+                )
+            }
+        }
+    }
+
+    private fun deleteNote() {
+        _state.value.noteId?.let { noteId ->
+            noteUseCases.deleteNote(noteId).onEach { loadingStatus ->
+                when (loadingStatus) {
+                    is LoadingStatus.Error -> {
+                        _uiEventChannel.send(
+                            UiEvent.ShowSnackbar(
+                                loadingStatus.message ?: "An unexpected error occurred"
+                            )
+                        )
+                        _state.value = _state.value.copy(isLoading = false)
+                    }
+
+                    is LoadingStatus.Loading -> {
+                        _state.value = _state.value.copy(isLoading = true)
+                    }
+
+                    is LoadingStatus.Success -> {
+                        _uiEventChannel.send(UiEvent.OnNavigateBack)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
     }
 }
