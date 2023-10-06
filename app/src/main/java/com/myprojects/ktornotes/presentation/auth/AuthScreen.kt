@@ -43,8 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.myprojects.ktornotes.R
-import com.myprojects.ktornotes.ui.theme.Orange60
-import com.myprojects.ktornotes.ui.theme.Orange75
+import com.myprojects.ktornotes.presentation.ui.theme.Orange60
+import com.myprojects.ktornotes.presentation.ui.theme.Orange75
 import com.myprojects.ktornotes.util.UiEvent
 
 @OptIn(ExperimentalMaterial3Api::class)

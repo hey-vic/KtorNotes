@@ -4,6 +4,8 @@ import com.myprojects.ktornotes.domain.repository.NoteRepository
 import com.myprojects.ktornotes.util.LoadingStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class InsertNote @Inject constructor(
@@ -16,6 +18,7 @@ class InsertNote @Inject constructor(
         if (text.isBlank()) {
             return flow { emit(LoadingStatus.Error("Text cannot be blank")) }
         }
-        return noteRepository.insertNote(title, text)
+        val currentTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        return noteRepository.insertNote(title, text, currentTime)
     }
 }

@@ -15,6 +15,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -28,12 +29,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.myprojects.ktornotes.util.UiEvent
+import com.myprojects.ktornotes.util.formatWithOptionalYear
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,9 +64,7 @@ fun NoteDetailScreen(
     }
 
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+        modifier = Modifier.fillMaxSize(),
         snackbarHost = {
             SnackbarHost(snackbarHostState)
         },
@@ -84,11 +83,12 @@ fun NoteDetailScreen(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp),
+                    .padding(8.dp)
             ) {
                 item {
                     TextField(
@@ -99,7 +99,7 @@ fun NoteDetailScreen(
                         placeholder = {
                             Text(
                                 text = "Note title",
-                                fontSize = 20.sp,
+                                fontSize = 24.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
                         },
@@ -110,14 +110,25 @@ fun NoteDetailScreen(
                             unfocusedIndicatorColor = Color.Transparent,
                             focusedIndicatorColor = Color.Transparent
                         ),
-                        textStyle = TextStyle(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.SemiBold,
+                        textStyle = LocalTextStyle.current.copy(
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.SemiBold
                         )
                     )
                 }
+                state.modifiedDateTime?.let { dateTime ->
+                    item {
+                        Text(
+                            text = dateTime.formatWithOptionalYear(),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Normal,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
+                        )
+                    }
+                }
                 item {
-                    Divider(modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp))
+                    Divider(modifier = Modifier.padding(horizontal = 8.dp))
                 }
                 item {
                     TextField(
@@ -126,14 +137,17 @@ fun NoteDetailScreen(
                             viewModel.onEvent(AddEditNoteEvent.TextChanged(it))
                         },
                         placeholder = {
-                            Text(text = "Note text")
+                            Text(text = "Note text", fontSize = 18.sp)
                         },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxSize(),
                         colors = TextFieldDefaults.textFieldColors(
                             containerColor = Color.Transparent,
                             cursorColor = MaterialTheme.colorScheme.primary,
                             unfocusedIndicatorColor = Color.Transparent,
                             focusedIndicatorColor = Color.Transparent
+                        ),
+                        textStyle = LocalTextStyle.current.copy(
+                            fontSize = 18.sp
                         )
                     )
                 }

@@ -9,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.myprojects.ktornotes.presentation.add_edit_note.NoteDetailScreen
 import com.myprojects.ktornotes.presentation.auth.AuthScreen
 import com.myprojects.ktornotes.presentation.note_list.NoteListScreen
-import com.myprojects.ktornotes.ui.theme.KtorNotesTheme
+import com.myprojects.ktornotes.presentation.ui.theme.KtorNotesTheme
 import com.myprojects.ktornotes.util.Constants
 import com.myprojects.ktornotes.util.NavigationRoutes
 import dagger.hilt.android.AndroidEntryPoint

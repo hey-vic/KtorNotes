@@ -112,7 +112,8 @@ class AddEditNoteViewModel @Inject constructor(
                         _state.value = AddEditNoteState(
                             title = note.title,
                             text = note.text,
-                            noteId = note.id
+                            noteId = note.id,
+                            modifiedDateTime = note.modifiedDateTime
                         )
                     }
                 }

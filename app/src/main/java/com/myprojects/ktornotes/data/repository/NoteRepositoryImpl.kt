@@ -45,13 +45,18 @@ class NoteRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun insertNote(title: String, text: String): Flow<LoadingStatus<Unit>> = flow {
+    override fun insertNote(
+        title: String,
+        text: String,
+        modifiedDateTime: String
+    ): Flow<LoadingStatus<Unit>> = flow {
         emit(LoadingStatus.Loading())
         try {
             api.insertNote(
                 NoteRequest(
                     title = title,
-                    text = text
+                    text = text,
+                    modifiedDateTime = modifiedDateTime
                 )
             )
             emit(LoadingStatus.Success())
@@ -68,11 +73,12 @@ class NoteRepositoryImpl @Inject constructor(
     override fun updateNote(
         id: String,
         title: String,
-        text: String
+        text: String,
+        modifiedDateTime: String
     ): Flow<LoadingStatus<Unit>> = flow {
         emit(LoadingStatus.Loading())
         try {
-            api.updateNote(id, NoteRequest(title, text))
+            api.updateNote(id, NoteRequest(title, text, modifiedDateTime))
             emit(LoadingStatus.Success())
         } catch (e: HttpException) {
             emit(LoadingStatus.Error(e.message ?: "An unexpected error occurred"))

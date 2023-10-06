@@ -2,11 +2,10 @@ package com.myprojects.ktornotes.presentation.note_list.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -23,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.myprojects.ktornotes.domain.model.Note
+import com.myprojects.ktornotes.util.formatByDifferenceFromNow
 
 @Composable
 fun NoteListItem(
@@ -33,13 +33,14 @@ fun NoteListItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(10.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable { onItemClick(note) }
             .padding(16.dp)
     ) {
         Column(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
                 text = note.title,
@@ -47,14 +48,20 @@ fun NoteListItem(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onSurface
             )
-            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = note.text,
-                maxLines = 3,
+                maxLines = 2,
+                fontSize = 16.sp,
                 overflow = TextOverflow.Ellipsis,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = note.modifiedDateTime.formatByDifferenceFromNow(),
+                fontWeight = FontWeight.Light,
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         Icon(

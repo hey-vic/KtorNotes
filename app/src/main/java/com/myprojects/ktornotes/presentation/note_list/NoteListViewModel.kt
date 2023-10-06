@@ -81,7 +81,10 @@ class NoteListViewModel @Inject constructor(
                 }
 
                 is LoadingStatus.Success -> {
-                    _state.value = NoteListState(notes = loadingStatus.data ?: emptyList())
+                    _state.value = NoteListState(
+                        notes = loadingStatus.data?.sortedByDescending { it.modifiedDateTime }
+                            ?: emptyList()
+                    )
                 }
             }
         }.launchIn(viewModelScope)

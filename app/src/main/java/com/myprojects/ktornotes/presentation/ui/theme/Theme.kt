@@ -1,4 +1,4 @@
-package com.myprojects.ktornotes.ui.theme
+package com.myprojects.ktornotes.presentation.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -12,20 +12,24 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Orange60,
-    primaryContainer = Orange75,
-    surface = Grey10,
-    surfaceVariant = Grey20,
-    onPrimaryContainer = Grey10,
-    onPrimary = Color.White
-)
-
 private val LightColorScheme = lightColorScheme(
     primary = Orange60,
     primaryContainer = Orange75,
     surface = Grey95,
     surfaceVariant = Color.White,
+    onSurface = Grey10,
+    onSurfaceVariant = Grey30,
+    onPrimaryContainer = Grey10,
+    onPrimary = Color.White
+)
+
+private val DarkColorScheme = darkColorScheme(
+    primary = Orange60,
+    primaryContainer = Orange75,
+    surface = Grey10,
+    surfaceVariant = Grey20,
+    onSurface = Grey95,
+    onSurfaceVariant = Grey80,
     onPrimaryContainer = Grey10,
     onPrimary = Color.White
 )
