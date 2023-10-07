@@ -3,7 +3,7 @@
 
 Бэкенд: https://github.com/hey-vic/ktor-notes
 
-<img src="https://github.com/hey-vic/KtorNotes/blob/media/app-gif.gif" width="360" height="640"/>
+<img src="https://github.com/hey-vic/KtorNotes/blob/media/app-demo.gif" width="360" height="640"/>
 
 ## Стек
 - Kotlin (Coroutines, Flow)
@@ -15,13 +15,14 @@
 - Бэкенд на Ktor + MongoDB + JWT-аутентификация
 
 ## Скриншоты
-![image](https://github.com/hey-vic/KtorNotes/assets/58303400/92cf87d6-74bb-4e94-9764-d559d559f5a5)
-![image](https://github.com/hey-vic/KtorNotes/assets/58303400/2792db52-35bf-4ae0-981b-a1b17a0e484c)
+<img src="https://github.com/hey-vic/KtorNotes/assets/58303400/6514c5db-e1e4-400a-bdc0-f0b79a72a24b" width="877" height="640"/>
+<img src="https://github.com/hey-vic/KtorNotes/assets/58303400/59a31b44-07ff-4466-8891-346cfbd39bf4" width="877" height="640"/>
 
 ## Функции
 - Регистрация и вход по почте и паролю
 - Отображение списка заметок для текущего пользователя, возможность просмотреть отдельную заметку
 - Добавление, редактирование, удаление заметок
+- Автоматическая сортировка заметок по дате/времени последнего обновления
 - После авторизации токен сохраняется в Shared Preferences, при следующем входе в приложение открывается уже не экран авторизации, а сразу экран заметок
 - Возможность выхода из аккаунта (удаление токена из Shared Preferences, возврат на экран авторизации)
 - Проверка полей на валидность, вывод соответствующих сообщений об ошибках (почта не соответствует формату, пароль слишком короткий, пароль неверен, попытка повторной регистрации
