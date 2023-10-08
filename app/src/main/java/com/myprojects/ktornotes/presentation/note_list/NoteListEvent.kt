@@ -5,4 +5,5 @@ import com.myprojects.ktornotes.domain.model.Note
 sealed interface NoteListEvent {
     object OnSignOutClick : NoteListEvent
     data class OnDeleteNoteClick(val note: Note) : NoteListEvent
+    object OnRefresh : NoteListEvent
 }

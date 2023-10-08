@@ -62,6 +62,10 @@ class NoteListViewModel @Inject constructor(
                     }
                 }.launchIn(viewModelScope)
             }
+
+            is NoteListEvent.OnRefresh -> {
+                getNotes()
+            }
         }
     }
 
@@ -74,6 +78,7 @@ class NoteListViewModel @Inject constructor(
                             loadingStatus.message ?: "An unexpected error occurred"
                         )
                     )
+                    _state.value = _state.value.copy(isLoading = false)
                 }
 
                 is LoadingStatus.Loading -> {
@@ -83,7 +88,8 @@ class NoteListViewModel @Inject constructor(
                 is LoadingStatus.Success -> {
                     _state.value = NoteListState(
                         notes = loadingStatus.data?.sortedByDescending { it.modifiedDateTime }
-                            ?: emptyList()
+                            ?: emptyList(),
+                        isLoading = false
                     )
                 }
             }

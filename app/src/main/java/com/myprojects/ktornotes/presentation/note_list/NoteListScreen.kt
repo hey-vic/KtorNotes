@@ -2,7 +2,6 @@ package com.myprojects.ktornotes.presentation.note_list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -12,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Logout
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -27,11 +25,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.myprojects.ktornotes.presentation.note_list.components.NoteListItem
 import com.myprojects.ktornotes.util.UiEvent
 
@@ -67,7 +67,9 @@ fun NoteListScreen(
             }
         }
     }
+
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = state.isLoading)
 
     Scaffold(
         modifier = Modifier
@@ -106,11 +108,21 @@ fun NoteListScreen(
             }
         }
     ) { paddingValues ->
-        Box(
+        SwipeRefresh(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.surface),
+            state = swipeRefreshState,
+            onRefresh = { viewModel.onEvent(NoteListEvent.OnRefresh) },
+            indicator = { state, refreshTrigger ->
+                SwipeRefreshIndicator(
+                    state = state,
+                    refreshTriggerDistance = refreshTrigger,
+                    backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
+            }
         ) {
             LazyColumn(
                 modifier = Modifier
@@ -132,9 +144,6 @@ fun NoteListScreen(
                 item {
                     Spacer(modifier = Modifier.height(80.dp))
                 }
-            }
-            if (state.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
     }
